@@ -351,63 +351,11 @@ public class ChooseLockGeneric extends PreferenceActivity {
          * {@link DevicePolicyManager#PASSWORD_QUALITY_UNSPECIFIED}
          */
         void updateUnlockMethodAndFinish(int quality, boolean disabled) {
-            // Sanity check. We should never get here without confirming user's existing password.
-            if (!mPasswordConfirmed) {
-                throw new IllegalStateException("Tried to update password without confirming it");
-            }
-
-            final boolean isFallback = getActivity().getIntent()
-                .getBooleanExtra(LockPatternUtils.LOCKSCREEN_BIOMETRIC_WEAK_FALLBACK, false);
-
-            quality = upgradeQuality(quality, null);
-
-            if (quality >= DevicePolicyManager.PASSWORD_QUALITY_NUMERIC) {
-                int minLength = mDPM.getPasswordMinimumLength(null);
-                if (minLength < MIN_PASSWORD_LENGTH) {
-                    minLength = MIN_PASSWORD_LENGTH;
-                }
-                final int maxLength = mDPM.getPasswordMaximumLength(quality);
-                Intent intent = new Intent().setClass(getActivity(), ChooseLockPassword.class);
-                intent.putExtra(LockPatternUtils.PASSWORD_TYPE_KEY, quality);
-                intent.putExtra(ChooseLockPassword.PASSWORD_MIN_KEY, minLength);
-                intent.putExtra(ChooseLockPassword.PASSWORD_MAX_KEY, maxLength);
-                intent.putExtra(CONFIRM_CREDENTIALS, false);
-                intent.putExtra(LockPatternUtils.LOCKSCREEN_BIOMETRIC_WEAK_FALLBACK,
-                        isFallback);
-                if (isFallback) {
-                    startActivityForResult(intent, FALLBACK_REQUEST);
-                    return;
-                } else {
-                    mFinishPending = true;
-                    intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-                    startActivity(intent);
-                }
-            } else if (quality == DevicePolicyManager.PASSWORD_QUALITY_SOMETHING) {
-                Intent intent = new Intent(getActivity(), ChooseLockPatternSize.class);
-                intent.putExtra("key_lock_method", "pattern");
-                intent.putExtra(CONFIRM_CREDENTIALS, false);
-                intent.putExtra(LockPatternUtils.LOCKSCREEN_BIOMETRIC_WEAK_FALLBACK,
-                        isFallback);
-                if (isFallback) {
-                    startActivityForResult(intent, FALLBACK_REQUEST);
-                    return;
-                } else {
-                    mFinishPending = true;
-                    intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-                    startActivity(intent);
-                }
-            } else if (quality == DevicePolicyManager.PASSWORD_QUALITY_BIOMETRIC_WEAK) {
-                Intent intent = getBiometricSensorIntent();
-                mFinishPending = true;
-                startActivity(intent);
-            } else if (quality == DevicePolicyManager.PASSWORD_QUALITY_UNSPECIFIED) {
-                mChooseLockSettingsHelper.utils().clearLock(false);
-                mChooseLockSettingsHelper.utils().setLockScreenDisabled(disabled);
-                getActivity().setResult(Activity.RESULT_OK);
-                finish();
-            } else {
-                finish();
-            }
+        	// CraveOS - We dont allow a lock screen - ever
+        	mChooseLockSettingsHelper.utils().clearLock(false);
+            mChooseLockSettingsHelper.utils().setLockScreenDisabled(disabled);
+            getActivity().setResult(Activity.RESULT_OK);
+            finish();
         }
 
         @Override
