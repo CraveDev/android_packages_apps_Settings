@@ -78,10 +78,11 @@ public class BootReceiver extends BroadcastReceiver {
     private void configureCPU(Context ctx) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
 
-        if (prefs.getBoolean(Processor.SOB_PREF, false) == false) {
+        // CraveOS - We always want to restore in-case something went wrong
+        /*if (prefs.getBoolean(Processor.SOB_PREF, false) == false) {
             Log.i(TAG, "Restore disabled by user preference.");
             return;
-        }
+        }*/
 
         String governor = prefs.getString(Processor.GOV_PREF, null);
         String minFrequency = prefs.getString(Processor.FREQ_MIN_PREF, null);
@@ -112,7 +113,11 @@ public class BootReceiver extends BroadcastReceiver {
             if (governor != null && governors != null && governors.contains(governor)) {
                 Utils.fileWriteOneLine(Processor.GOV_FILE, governor);
             }
-            Log.d(TAG, "CPU settings restored.");
+            Log.d(TAG, "CPU settings restored. (governor=" + governor +
+            		", minFrequency=" + minFrequency + 
+            		", maxFrequency=" + maxFrequency + 
+            		", availableFrequenciesLine=" + availableFrequenciesLine + 
+            		", availableGovernorsLine=" + availableGovernorsLine);
         }
     }
 
