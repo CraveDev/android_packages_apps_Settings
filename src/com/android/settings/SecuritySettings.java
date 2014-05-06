@@ -375,6 +375,7 @@ public class SecuritySettings extends SettingsPreferenceFragment
             mToggleAppInstallation = (CheckBoxPreference) findPreference(
                     KEY_TOGGLE_INSTALL_APPLICATIONS);
             mToggleAppInstallation.setChecked(isNonMarketAppsAllowed());
+            mToggleAppInstallation.setEnabled(false);
 
             // Package verification, only visible to primary user and if enabled
             mToggleVerifyApps = (CheckBoxPreference) findPreference(KEY_TOGGLE_VERIFY_APPLICATIONS);
@@ -394,6 +395,7 @@ public class SecuritySettings extends SettingsPreferenceFragment
                     mToggleVerifyApps.setEnabled(false);
                 }
             }
+            mToggleVerifyApps.setEnabled(false);
 
             // App security settings
             addPreferencesFromResource(R.xml.security_settings_app_cyanogenmod);

@@ -83,7 +83,7 @@ public class BootReceiver extends BroadcastReceiver {
             return;
         }
 
-        String governor = prefs.getString(Processor.GOV_PREF, null);
+        String governor = prefs.getString(Processor.GOV_PREF, "interactive");
         String minFrequency = prefs.getString(Processor.FREQ_MIN_PREF, null);
         String maxFrequency = prefs.getString(Processor.FREQ_MAX_PREF, null);
         String availableFrequenciesLine = Utils.fileReadOneLine(Processor.FREQ_LIST_FILE);
