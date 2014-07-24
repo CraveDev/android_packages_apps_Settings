@@ -734,7 +734,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
     }
 
     private void updateRootAccessOptions() {
-        String value = SystemProperties.get(ROOT_ACCESS_PROPERTY, "1");
+        String value = SystemProperties.get(ROOT_ACCESS_PROPERTY, "3");
         mRootAccess.setValue(value);
         mRootAccess.setSummary(getResources()
                 .getStringArray(R.array.root_access_entries)[Integer.valueOf(value)]);
@@ -746,7 +746,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
     }
 
     private void writeRootAccessOptions(Object newValue) {
-        String oldValue = SystemProperties.get(ROOT_ACCESS_PROPERTY, "1");
+        String oldValue = SystemProperties.get(ROOT_ACCESS_PROPERTY, "3");
         SystemProperties.set(ROOT_ACCESS_PROPERTY, newValue.toString());
         if (Integer.valueOf(newValue.toString()) < 2 && !oldValue.equals(newValue)
                 && "1".equals(SystemProperties.get("service.adb.root", "0"))) {
@@ -760,7 +760,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
     }
 
     private void resetRootAccessOptions() {
-        String oldValue = SystemProperties.get(ROOT_ACCESS_PROPERTY, "1");
+        String oldValue = SystemProperties.get(ROOT_ACCESS_PROPERTY, "3");
         SystemProperties.set(ROOT_ACCESS_PROPERTY, "1");
         if (!oldValue.equals("1") && "1".equals(SystemProperties.get("service.adb.root", "0"))) {
             SystemProperties.set("service.adb.root", "0");
@@ -1606,7 +1606,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             writeAppProcessLimitOptions(newValue);
             return true;
         } else if (preference == mRootAccess) {
-            if ("0".equals(SystemProperties.get(ROOT_ACCESS_PROPERTY, "1"))
+            if ("0".equals(SystemProperties.get(ROOT_ACCESS_PROPERTY, "3"))
                     && !"0".equals(newValue)) {
                 mSelectedRootValue = newValue;
                 mDialogClicked = false;
